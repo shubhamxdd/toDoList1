@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const app = express();
 
 var tasks = ["I am first task!"]
+let workItems = []
 
 app.set("view engine", "ejs");
 
@@ -18,19 +19,39 @@ app.get("/", function (req, res) {
         month: "long"
     }
     var day = today.toLocaleDateString("en-US", options)
-
-
-    res.render("list", { kindOfDay: day, newItems: tasks });
+    res.render("list", { listTitle: day, newItems: tasks });
 });
 
 app.post("/", function(req,res) {
+
     var task =  req.body.newItem
+    
+    if(req.body.list === "Work") {
+        workItems.push(task)
+        res.redirect("/work")
+    }
+    else {
+        tasks.push(task)
+        res.redirect("/")
+    }
 
-    tasks.push(task)
-
+    console.log(req.body);
 
     console.log(task);
-    res.redirect("/")
+})
+
+app.get("/work", function(req,res) {
+    res.render("list", {listTitle: "Work List", newItems: workItems})
+})
+
+app.post("/work", function(req, res){
+    let item = req.body.newItem
+    workItems.push(item)
+    res.redirect("/work")
+})
+
+app.get("/about", function(req,res){
+    res.render("about")
 })
 
 app.listen(process.env.PORT || 3000, function () {

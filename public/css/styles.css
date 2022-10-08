@@ -96,3 +96,9 @@ footer {
   color: rgba(0, 0, 0, 0.5);
   text-align: center;
 }
+
+.aboutbtm{
+  text-align: center;
+  margin-bottom: 15px;
+  text-decoration: none;
+}
